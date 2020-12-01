@@ -1,5 +1,6 @@
-const app = require( './app')
+const app = require('./app');
 
-app.listen(app.get("port"), () => {
-    console.log('hey from port 5000')
-})
+app.listen(app.get('port'), () => {
+  // eslint-disable-next-line no-console
+  console.log('hey from port 5000');
+});

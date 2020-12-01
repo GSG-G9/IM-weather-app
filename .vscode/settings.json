@@ -1,4 +1,13 @@
 {
+    
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "launch": {
+    
+        "configurations": [],
+        "compounds": []
+    },
+    "eslint.format.enable": true,
+
+
 }
