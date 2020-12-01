@@ -1,0 +1,33 @@
+{
+  "name": "im-weather-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test":  "jest --passWithNoTests",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "kill": "fuser -k 5000/tcp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GSG-G9/IM-weather-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GSG-G9/IM-weather-app/issues"
+  },
+  "homepage": "https://github.com/GSG-G9/IM-weather-app#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.14.0",
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^26.6.3",
+    "supertest": "^6.0.1"
+  }
+}
