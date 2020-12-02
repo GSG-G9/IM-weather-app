@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test":  "jest --passWithNoTests",
+    "test": "jest --passWithNoTests",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "kill": "fuser -k 5000/tcp"
@@ -26,8 +26,10 @@
   },
   "devDependencies": {
     "eslint": "^7.14.0",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "jest": "^26.6.3",
+    "nodemon": "^2.0.6",
     "supertest": "^6.0.1"
   }
 }
