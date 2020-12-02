@@ -1,6 +1,5 @@
 const router = require('express').Router();
-const { fetchData } = require('../controllers/weatherData');
+const { serveFront } = require('../controllers/front');
 
-router.get('/search', fetchData);
-
+router.get('/frontdata', serveFront);
 module.exports = router;
