@@ -6,7 +6,23 @@
     <title>Weather App</title>
 </head>
 <body>
-    <hi>jjjj</hi>
+    <form >
+        <input  id="city">
+    </form>
+    <!-- <script> 
+    document.getElementById('city').addEventListener('input', (e) => {
+        e.preventDefault();
+        const val = e.target.value;
+        console.log(val)
+        fetch(`/seacrh?city=${e.target.value}`)
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err))
+
+        
+
+    })
+    </script> -->
     
 </body>
 </html>
