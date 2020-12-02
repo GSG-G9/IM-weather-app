@@ -120,7 +120,7 @@ h5 {
   align-items: center;
 }
 
-.card--content .card--content--daily .card--content--daily_temp .icon img {
+.card--content .card--content--daily .card--content--daily_temp div img {
   width: 30px;
   margin-right: 1.5rem;
 }
@@ -227,6 +227,11 @@ h5 {
 
 .result-card div {
   padding: 0.5rem 0;
+}
+
+.result-card div span[class^=result-card--d] {
+  padding-right: 0.5rem;
+  font-size: 1.2rem;
 }
 
 .block {
