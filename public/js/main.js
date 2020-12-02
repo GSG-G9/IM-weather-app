@@ -1,3 +1,3 @@
-import { cardMouseMoveEffect } from "./card.js";
+import cardMouseMoveEffect from "./card.js";
 
 cardMouseMoveEffect();
