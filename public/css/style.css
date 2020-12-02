@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+body{
+    background-color: aquamarine;
+=======
 :root {
   font-size: 62.5%;
 }
@@ -202,4 +206,5 @@ h5 {
 
 .search-result-container {
   position: absolute;
+>>>>>>> main
 }
