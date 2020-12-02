@@ -8,7 +8,7 @@ require('dotenv').config();
 const app = express();
 
 app.set('port', process.env.PORT || 5500);
-// app.use(compression);
+app.use(compression);
 app.use(express.static(join(__dirname, '..', 'public'), { maxAge: '30d' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
