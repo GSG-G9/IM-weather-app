@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const fetchWeatherData = (latitude, longitude) => {
+const fetchWeatherData = (latitude, longitude, locationData) => {
   const weatherUrl = `https://api.darksky.net/forecast/${process.env.API_KEY}/${latitude},${longitude}?units=si&lang=ar`;
 
   return fetch(weatherUrl)
@@ -13,6 +13,12 @@ const fetchWeatherData = (latitude, longitude) => {
         temperature: item.temperature,
 
       }));
+      const toDayWeather = {
+        ...hourlyWeather,
+        time: info.currently.time,
+        icon: info.currently.icon,
+        temperature: info.currently.temperature,
+      }
       const dailyWeather = info.daily.data.map((item) => ({
         time: item.time,
         weather_status: item.summary,
@@ -22,20 +28,21 @@ const fetchWeatherData = (latitude, longitude) => {
 
       }));
       // return [hourlyWeather, dailyWeather];
-      return { hourlyWeather, dailyWeather };
+      return { toDayWeather, dailyWeather, locationData };
     })
     .catch((err) => console.log(err));
 };
 
-const fetchData = () => {
-  const geolocationUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/gaza.json?access_token=${process.env.ACCESS_TOKEN}`;
+const fetchData = (address = 'gaza') => {
+  const geolocationUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${process.env.ACCESS_TOKEN}`;
 
   return fetch(geolocationUrl)
     .then((response) => response.json())
-    .then((data) => data.features[0].center)
+    .then((data) => data.features)
     .then((centerData) => {
-      const [latitude, longitude] = centerData;
-      return fetchWeatherData(latitude, longitude).then((d) => d);
+      // console.log(centerData);
+      const [latitude, longitude] = centerData[0].center;
+      return fetchWeatherData(latitude, longitude, centerData).then((d) => d);
     })
     .catch((err) => console.log(err));
 };

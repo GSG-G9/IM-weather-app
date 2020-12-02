@@ -1,18 +1,26 @@
 import cardMouseMoveEffect from './card.js';
-import debounce from './utilites.js';
-import { renderResultSearchCard, fetchWeather } from './render.js';
+import { debounce } from './utilites.js';
+import {
+  renderResultSearchCard,
+  fetchWeather,
+  searchResult,
+} from './render.js';
 
 const search = document.getElementById('search');
 
-cardMouseMoveEffect();
-fetchWeather();
+if (!localStorage.get('weather')) {
+  localStorage.set('weather', 'gaza');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  // search.value = localStorage.getItem('weather');
+  cardMouseMoveEffect();
   let resultCards;
   search.addEventListener(
     'input',
     debounce((e) => {
       e.preventDefault();
-      fetch(`/weather?address=${e.target.value}`).then((res) => {
+      fetch(`/weather?address=${e.target.value || localStorage.get('weather')}`).then((res) => {
         res.json().then((data) => {
           if (data.err) {
             console.log(data.error);
@@ -23,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
               searchResult.classList.remove('block');
             }
 
-            renderResultSearchCard(data.features);
+            renderResultSearchCard(data.locationData);
             resultCards = document.querySelectorAll('.result-card');
 
             resultCards.forEach((item) => {
@@ -38,6 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       });
-    }, 1000),
+    }, 500),
   );
 });

@@ -6,4 +6,14 @@ const debounce = (func, delay) => {
   };
 };
 
-export default debounce;
+const days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+export { debounce, days };
