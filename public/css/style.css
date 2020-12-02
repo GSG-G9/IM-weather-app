@@ -202,4 +202,49 @@ h5 {
 
 .search-result-container {
   position: absolute;
+  display: none;
+  width: 100%;
+  background-color: #f0f0f0;
+  color: #757575;
+  font-size: 1.5rem;
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+  border-bottom: 1px solid #777777;
+  padding: 0.5rem;
+  z-index: 1000;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.result-card:hover {
+  background-color: #c7c7c7a9;
+  transition: all 0.25s;
+}
+
+.result-card__header {
+  padding: 0.5rem;
+}
+
+.result-card--details {
+  padding: 0.5rem;
+}
+
+.result-card--details__long,
+.result-card--details__lat {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+}
+
+.fa-map-marker-alt {
+ font-size: 1rem;
+ padding-right: 0.5rem;
+}
+
+.block {
+  display: block;
 }
