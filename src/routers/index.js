@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { fetchData } = require('../controllers/weatherData');
 
-router.get('/search?city=gaza', fetchData);
+router.get('/search', fetchData);
 
 module.exports = router;

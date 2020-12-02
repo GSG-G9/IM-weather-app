@@ -202,4 +202,33 @@ h5 {
 
 .search-result-container {
   position: absolute;
+  width: 100%;
+  display: none;
+  background-color: #f0f0f0;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+  border-bottom: 1px solid #959595;
+  color: #757575;
+  padding: 0.5rem;
+  transition: all 0.25s;
+}
+.result-card:hover {
+  background-color: #c7c7c7;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.result-card div {
+  padding: 0.5rem 0;
+}
+
+.block {
+  display: block;
 }
