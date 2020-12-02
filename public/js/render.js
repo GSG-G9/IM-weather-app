@@ -65,15 +65,15 @@ function fetchWeather(placeName) {
       if (data.error) {
         console.log(data.error);
       } else {
-        console.log(data);
+        console.log(data.toDayWeather);
         cityName.classList.remove('loading');
         todayTemp.classList.remove('loadingCol');
 
         todayTemp.textContent = `${Math.round(data.toDayWeather.temperature)}°C`;
-        countryName.textContent = placeName;
-        cityName.textContent = `${data.placeName} - `;
+        cityName.textContent = data.locationData[0].place_name;
+        // cityName.textContent = `${data.placeName} - `;
 
-        weatherIconImg.setAttribute('src', `images/weathericons/${data.icon}.png`);
+        weatherIconImg.setAttribute('src', `images/weathericons/${data.toDayWeather.icon}.png`);
         weatherIconImg.setAttribute('alt', data.toDayWeather.icon);
         cardClock.textContent = `${new Date(+`${Date.now()}`).toLocaleTimeString([], {
           hour: '2-digit',

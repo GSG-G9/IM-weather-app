@@ -8,8 +8,8 @@ import {
 
 const search = document.getElementById('search');
 
-if (!localStorage.get('weather')) {
-  localStorage.set('weather', 'gaza');
+if (!localStorage.getItem('weather')) {
+  localStorage.setItem('weather', 'gaza');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'input',
     debounce((e) => {
       e.preventDefault();
-      fetch(`/weather?address=${e.target.value || localStorage.get('weather')}`).then((res) => {
+      fetch(`/weather?address=${e.target.value || localStorage.getItem('weather')}`).then((res) => {
         res.json().then((data) => {
           if (data.err) {
             console.log(data.error);
