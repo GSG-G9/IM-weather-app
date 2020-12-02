@@ -65,7 +65,6 @@ function fetchWeather(placeName) {
       if (data.error) {
         console.log(data.error);
       } else {
-        console.log(data.toDayWeather);
         cityName.classList.remove('loading');
         todayTemp.classList.remove('loadingCol');
 
