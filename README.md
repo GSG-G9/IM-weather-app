@@ -1,6 +1,6 @@
 # IM-weather-app
 
-##team members: 
+## team members: 
 - iman
 - mohammed
 
