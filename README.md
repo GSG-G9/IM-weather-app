@@ -1,8 +1,8 @@
 # IM-weather-app
 
 ## team members: 
-- iman
-- mohammed
+-  Iman
+- Mohammed
 
 
 ## demo https://weather-app-im.herokuapp.com/
