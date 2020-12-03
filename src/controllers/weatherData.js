@@ -30,7 +30,7 @@ const fetchWeatherData = (latitude, longitude, locationData) => {
       // return [hourlyWeather, dailyWeather];
       return { toDayWeather, dailyWeather, locationData };
     })
-    .catch((err) => console.log(err));
+    .catch((err) => err);
 };
 
 const fetchData = (address = 'gaza') => {
@@ -41,10 +41,10 @@ const fetchData = (address = 'gaza') => {
     .then((data) => data.features)
     .then((centerData) => {
       // console.log(centerData);
-      const [latitude, longitude] = centerData[0].center;
+      const [longitude, latitude] = centerData[0].center;
       return fetchWeatherData(latitude, longitude, centerData).then((d) => d);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => err);
 };
 
 module.exports = { fetchData };
