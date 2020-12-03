@@ -2,11 +2,11 @@ import { days } from './utilites.js';
 
 const searchResult = document.getElementById('search_result');
 const cityName = document.querySelector('.city-name');
-const countryName = document.querySelector('.country-name');
 const cardClock = document.querySelector('.card--header--title_clock h2');
 const dailyTempContainer = document.getElementById('card_daily_temp');
 const todayTemp = document.querySelector('.card--header--temp_Value');
 const weatherIconImg = document.querySelector('.card--header--temp_icon img');
+const errorEl = document.querySelector('.error');
 
 // Render Daily Temp To DOM
 function renderDailyWeather(dailyWeatherArray) {
@@ -63,21 +63,23 @@ function fetchWeather(placeName) {
   fetch(`/weather?address=${placeName}`).then((res) => {
     res.json().then((data) => {
       if (data.error) {
-        console.log(data.error);
+        errorEl.classList.remove('hidden');
+        errorEl.classList.add('block');
       } else {
+        errorEl.classList.remove('block');
+        errorEl.classList.add('hidden');
         cityName.classList.remove('loading');
         todayTemp.classList.remove('loadingCol');
 
         todayTemp.textContent = `${Math.round(data.toDayWeather.temperature)}°C`;
-        cityName.textContent = data.locationData[0].place_name;
-        // cityName.textContent = `${data.placeName} - `;
-
+        const cityNameArr = data.locationData[0].place_name.split(', ');
+        cityName.textContent = `${cityNameArr[0]} - ${cityNameArr[2]}`;
         weatherIconImg.setAttribute('src', `images/weathericons/${data.toDayWeather.icon}.png`);
         weatherIconImg.setAttribute('alt', data.toDayWeather.icon);
         cardClock.textContent = `${new Date(+`${Date.now()}`).toLocaleTimeString([], {
           hour: '2-digit',
           minute: '2-digit',
-        })} ${new Date(+`${Date.now()}000`).getHours() >= 12 ? 'PM' : 'AM'}`;;
+        })} ${new Date(+`${Date.now()}000`).getHours() >= 12 ? 'PM' : 'AM'}`;
         renderDailyWeather(data.dailyWeather);
       }
     });

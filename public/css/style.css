@@ -237,3 +237,17 @@ h5 {
 .block {
   display: block;
 }
+
+.error {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #d60047;
+  background-color: #d600472f;
+  color: #d60047;
+  border-radius: 5px;
+  height: 35px;
+}
+
+.hidden {
+  display: none;
+}

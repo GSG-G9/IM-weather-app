@@ -7,9 +7,16 @@ import {
 } from './render.js';
 
 const search = document.getElementById('search');
+let placeName = '';
 
-if (!localStorage.getItem('weather')) {
-  localStorage.setItem('weather', 'gaza');
+if (!localStorage.getItem('weatherApp')) {
+  document.addEventListener('DOMContentLoaded', (e) => {
+    localStorage.setItem('weatherApp', 'gaza');
+    fetchWeather('gaza');
+  });
+} else if (localStorage.getItem('weatherApp')) {
+  placeName = localStorage.getItem('weatherApp');
+  fetchWeather(placeName);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
