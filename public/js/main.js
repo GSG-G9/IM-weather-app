@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import cardMouseMoveEffect from './card.js';
 import { debounce } from './utilites.js';
 import {
@@ -7,15 +8,20 @@ import {
 } from './render.js';
 
 const search = document.getElementById('search');
-let placeName = '';
+let placeName = {};
 
 if (!localStorage.getItem('weatherApp')) {
-  document.addEventListener('DOMContentLoaded', (e) => {
-    localStorage.setItem('weatherApp', 'gaza');
-    fetchWeather('gaza');
+  document.addEventListener('DOMContentLoaded', () => {
+    localStorage.setItem(
+      'weatherApp',
+      JSON.stringify({
+        lat: 31.5, long: 34.4667, cityName: 'Gaza', countryName: 'Palestine',
+      }),
+    );
+    fetchWeather(JSON.parse(localStorage.getItem('weatherApp')));
   });
 } else if (localStorage.getItem('weatherApp')) {
-  placeName = localStorage.getItem('weatherApp');
+  placeName = JSON.parse(localStorage.getItem('weatherApp'));
   fetchWeather(placeName);
 }
 
@@ -27,9 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
     'input',
     debounce((e) => {
       e.preventDefault();
-      fetch(`/weather?address=${e.target.value || localStorage.getItem('weather')}`).then((res) => {
+      if (!e.target.value.trim()) return;
+      fetch(
+        `/api/v1/geolocation?address=${
+          e.target.value
+        }`,
+      ).then((res) => {
         res.json().then((data) => {
-          if (data.err) {
+          if (data.error) {
             console.log(data.error);
           } else {
             searchResult.classList.add('block');
@@ -38,12 +49,20 @@ document.addEventListener('DOMContentLoaded', () => {
               searchResult.classList.remove('block');
             }
 
-            renderResultSearchCard(data.locationData);
+            renderResultSearchCard(data);
             resultCards = document.querySelectorAll('.result-card');
 
             resultCards.forEach((item) => {
-              item.addEventListener('click', function (e) {
-                fetchWeather(this.dataset.placeName);
+              // eslint-disable-next-line func-names
+              item.addEventListener('click', function (evt) {
+                evt.preventDefault();
+                const locationCenter = {
+                  lat: this.dataset.lat,
+                  long: this.dataset.long,
+                  cityName: this.dataset.cityname,
+                  countryName: this.dataset.countryname,
+                };
+                fetchWeather(locationCenter);
                 search.value = '';
                 if (search.value === '') {
                   searchResult.classList.remove('block');
@@ -55,4 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, 500),
   );
+});
+
+window.addEventListener('offline', () => {
+  document.body.innerHTML = '<h1 class="offline">No connection...</h1>';
 });
