@@ -21,6 +21,7 @@
     <section class="hero-section">
       <div class="container">
         <div class="card" id="weather-card">
+          <div class="overlay"><img src="./images/rings.svg" alt=""></div>
           <div class="card--header">
             <div class="card--header--input">
               <input class="input-search" type="search" name="city" id="search" placeholder="Search">
@@ -30,19 +31,19 @@
             <div class="error hidden"></div>
             <div class="card--header--title">
               <div class="card--header--title_placename">
-                <span class="city-name"><h1>Gaza</h1></span>
+                <span class="city-name"><h1></h1></span>
               </div>
-              <div class="card--header--title_clock"><h2>10:55:22 AM</h2></div>
+              <div class="card--header--title_clock"><h2></h2></div>
             </div>
             <div class="card--header--temp">
               <div class="card--header--temp_icon">
-                <img src="./images/weathericons/cloudy.png" alt="" />
+                <img src="./images/default-placeholder.png" alt="" />
               </div>
-              <div class="card--header--temp_Value">26<sup>&deg;</sup></div>
+              <div class="card--header--temp_Value"><sup>&deg;</sup></div>
             </div>
             <div class="card--header--temp-details">
               <div class="card--header--temp-details_date"></div>
-              <div class="card--header--temp-details_temp">
+              <div class="card--header--temp-details_temp" id="hourly-weather">
                 <div class="sub-card">
                   <span class="sub-card--hour">4pm</span>
                   <img src="./images/weathericons/wind.png" alt="" />

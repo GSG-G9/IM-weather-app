@@ -1,13 +1,11 @@
 const router = require('express').Router();
-const { serveFront } = require('../controllers/front');
 
-router.get('/weather', serveFront);
+const { serverError, fetchWeatherData, geocode } = require('../controllers/index');
 
-router.use((error, req, res) => {
-  const err = new Error();
-  const msg = err.msg || 'something wrent!';
-  const status = err.status || 500;
-  res.status(status).json({ msg, status });
-});
+router.get('/weather', fetchWeatherData);
+
+router.get('/geolocation', geocode);
+
+router.use(serverError);
 
 module.exports = router;

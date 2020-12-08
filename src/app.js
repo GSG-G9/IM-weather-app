@@ -13,9 +13,7 @@ app.use(express.static(join(__dirname, '..', 'public'), { maxAge: '30d' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/', router);
-
-app.use(clientError);
-app.use(serverError);
+app.use('/api/v1', router);
+app.use((req, res) => res.status(404).sendFile(join(__dirname, '..', 'public', '404.html')));
 
 module.exports = app;

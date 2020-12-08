@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/extensions
 import { days } from './utilites.js';
 
 const searchResult = document.getElementById('search_result');
@@ -7,6 +8,11 @@ const dailyTempContainer = document.getElementById('card_daily_temp');
 const todayTemp = document.querySelector('.card--header--temp_Value');
 const weatherIconImg = document.querySelector('.card--header--temp_icon img');
 const errorEl = document.querySelector('.error');
+const overlay = document.querySelector('.overlay');
+const hourlyWeather = document.getElementById('hourly-weather');
+
+cardClock.parentElement.classList.add('loading');
+cityName.parentElement.classList.add('loading');
 
 // Render Daily Temp To DOM
 function renderDailyWeather(dailyWeatherArray) {
@@ -21,7 +27,9 @@ function renderDailyWeather(dailyWeatherArray) {
     // Div Element To Day Name Text
     const dayNameDiv = document.createElement('div');
     dayNameDiv.setAttribute('class', 'card--content--daily_date');
-    dayNameDiv.textContent = `${days[new Date(+`${item.time}000`).getDay()]} ${new Date(+`${item.time}000`).getDate()}`;
+    dayNameDiv.textContent = `${
+      days[new Date(+`${item.time}000`).getDay()]
+    } ${new Date(+`${item.time}000`).getDate()}`;
 
     // Div Element To Max And Min In Each Day
     const cardContentDailTemp = document.createElement('div');
@@ -43,12 +51,12 @@ function renderDailyWeather(dailyWeatherArray) {
 
     dayMaxTemp.setAttribute('class', 'temp_max');
     dayMaxTemp.setAttribute('id', 'max-temp');
-    dayMaxTemp.textContent = Math.round(item.max_temperature);
+    dayMaxTemp.textContent = Math.round(item.temperatureMax);
     dayMaxTemp.appendChild(supDegSympoleMax);
 
     dayMinTemp.setAttribute('class', 'temp_min');
     dayMinTemp.setAttribute('id', 'min-temp');
-    dayMinTemp.textContent = Math.round(item.min_temperature);
+    dayMinTemp.textContent = Math.round(item.temperatureMin);
     dayMinTemp.appendChild(supDegSympoleMin);
     cardContentDailTemp.append(dayIconDiv, dayMaxTemp, dayMinTemp);
 
@@ -59,48 +67,101 @@ function renderDailyWeather(dailyWeatherArray) {
   });
 }
 
-function fetchWeather(placeName) {
-  fetch(`/weather?address=${placeName}`).then((res) => {
-    res.json().then((data) => {
+const renderHourlyWeather = (data) => {
+  console.log(data);
+  while (hourlyWeather.hasChildNodes()) {
+    hourlyWeather.removeChild(hourlyWeather.lastChild);
+  }
+  data.forEach((element) => {
+    const hourlyWeatherSubCard = document.createElement('div');
+    hourlyWeatherSubCard.className = 'sub-card';
+
+    const subCardHour = document.createElement('span');
+    subCardHour.className = 'sub-card--hour';
+    subCardHour.textContent = `${new Date(+`+${element.time}000`).toLocaleTimeString(
+      [],
+      {
+        hour: '2-digit',
+      },
+    )} ${new Date(+`${element.time}000`).getHours() >= 12 ? 'PM' : 'AM'}`;
+
+    const subCardTemp = document.createElement('span');
+    subCardTemp.className = 'sub-card_temp';
+    subCardTemp.innerHTML = `${Math.round(element.temperature)}<sup>&deg;</sup>`;
+
+    const hourlyWeatherIconImg = document.createElement('img');
+    hourlyWeatherIconImg.setAttribute(
+      'src',
+      `images/weathericons/${element.icon}.png`,
+    );
+    hourlyWeatherIconImg.setAttribute('alt', element.icon);
+
+    hourlyWeatherSubCard.append(subCardHour, hourlyWeatherIconImg, subCardTemp);
+    hourlyWeather.append(hourlyWeatherSubCard);
+  });
+};
+
+function fetchWeather({
+  lat, long, cityName: city, countryName,
+}) {
+  fetch(`/api/v1/weather?lat=${lat}&long=${long}`)
+    .then((res) => res.json())
+    .then((data) => {
       if (data.error) {
         errorEl.classList.remove('hidden');
         errorEl.classList.add('block');
       } else {
+        overlay.remove();
+        cardClock.parentElement.classList.remove('loading');
+        cityName.parentElement.classList.remove('loading');
+
         errorEl.classList.remove('block');
         errorEl.classList.add('hidden');
         cityName.classList.remove('loading');
         todayTemp.classList.remove('loadingCol');
 
-        todayTemp.textContent = `${Math.round(data.toDayWeather.temperature)}°C`;
-        const cityNameArr = data.locationData[0].place_name.split(', ');
-        cityName.textContent = `${cityNameArr[0]} - ${cityNameArr[2]}`;
-        weatherIconImg.setAttribute('src', `images/weathericons/${data.toDayWeather.icon}.png`);
-        weatherIconImg.setAttribute('alt', data.toDayWeather.icon);
-        cardClock.textContent = `${new Date(+`${Date.now()}`).toLocaleTimeString([], {
+        todayTemp.textContent = `${Math.round(data.todayTemperature)}°C`;
+        cityName.textContent = `${city} - ${countryName}`;
+        weatherIconImg.setAttribute(
+          'src',
+          `images/weathericons/${data.todayIcon}.png`,
+        );
+        weatherIconImg.setAttribute('alt', data.todayIcon);
+        cardClock.textContent = `${new Date(
+          +`${Date.now()}`,
+        ).toLocaleTimeString([], {
           hour: '2-digit',
           minute: '2-digit',
         })} ${new Date(+`${Date.now()}000`).getHours() >= 12 ? 'PM' : 'AM'}`;
-        renderDailyWeather(data.dailyWeather);
+        renderDailyWeather(data.dailyData);
+        renderHourlyWeather(data.hourlyData);
       }
     });
-  });
 }
 
 const renderResultSearchCard = (searchResultData) => {
   if (!searchResultData) {
     return;
   }
-  searchResult.innerHTML = '';
+  // searchResult.innerHTML = '';
+  while (searchResult.hasChildNodes()) {
+    searchResult.removeChild(searchResult.lastChild);
+  }
   searchResultData.forEach((item) => {
     const resultCard = document.createElement('div');
     resultCard.setAttribute('class', 'result-card');
-    resultCard.setAttribute('data-place-name', item.place_name);
+    resultCard.setAttribute('data-lat', item.center[1]);
+    resultCard.setAttribute('data-long', item.center[0]);
+    resultCard.setAttribute('data-cityName', item.cityName);
+    resultCard.setAttribute('data-countryName', item.countryName);
 
     const resultCardHeader = document.createElement('div');
     resultCardHeader.setAttribute('class', 'result-card__header');
     const resultPlaceName = document.createElement('span');
     resultPlaceName.setAttribute('class', 'result-place-name');
-    resultCardHeader.textContent = item.place_name;
+    resultCardHeader.textContent = `${item.cityName} ${
+      item.countryName ? ` - ${item.countryName}` : ''
+    }`;
     resultCardHeader.appendChild(resultPlaceName);
 
     const resultCardDetails = document.createElement('div');
